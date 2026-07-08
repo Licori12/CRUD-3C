@@ -1,0 +1,5 @@
+/* Garante que o fundo cubra a tela inteira. */
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}

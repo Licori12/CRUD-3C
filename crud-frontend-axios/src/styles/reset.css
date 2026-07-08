@@ -1,0 +1,59 @@
+/* Box sizing previsivel: padding e borda entram no calculo do tamanho. */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Remove margens padrao sem afetar dialog nativo. */
+*:not(dialog) {
+    margin: 0;
+}
+
+/* Permite interpolacao de tamanhos quando o usuario nao reduziu animacoes. */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        interpolate-size: allow-keywords;
+    }
+}
+
+body {
+    /* Altura de linha mais confortavel e renderizacao de fonte mais suave. */
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Midias ficam responsivas por padrao. */
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* Campos e botoes herdam a fonte do restante da interface. */
+input, button, textarea, select {
+    font: inherit;
+}
+
+/* Evita que palavras longas estourem seus containers. */
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+/* Melhora quebra visual de paragrafos e titulos em navegadores compativeis. */
+p {
+    text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+}
+
+/* Isola stacking context quando frameworks usam root containers. */
+#root, #__next {
+    isolation: isolate;
+}
+
+/* Remove estilo padrao de listas. */
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}

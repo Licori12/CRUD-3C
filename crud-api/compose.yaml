@@ -1,0 +1,51 @@
+services:
+  # Servidor HTTP da API. Recebe as requisicoes do navegador/frontend.
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: crud-api-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      # Monta o codigo PHP para o Nginx encontrar public/index.php.
+      - ./src:/var/www/html
+      # Usa a configuracao local de rotas e PHP-FPM.
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+
+  # Runtime PHP-FPM. Executa os arquivos PHP chamados pelo Nginx.
+  php:
+    build: .
+    container_name: crud-api-php
+    environment:
+      # Variaveis usadas em config.php para abrir a conexao PDO.
+      DB_HOST: db
+      DB_NAME: crud_products
+      DB_USER: crud_user
+      DB_PASS: crud_pass
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  # Banco MySQL real usado pela API.
+  db:
+    image: mysql:8.4
+    container_name: crud-api-db
+    environment:
+      # Credenciais iniciais criadas pelo container do MySQL.
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: crud_products
+      MYSQL_USER: crud_user
+      MYSQL_PASSWORD: crud_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      # Volume persistente do banco: os dados sobrevivem ao restart dos containers.
+      - db_data:/var/lib/mysql
+      # Script executado na primeira criacao do banco.
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  # Volume nomeado gerenciado pelo Docker para persistencia do MySQL.
+  db_data:

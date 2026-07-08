@@ -1,0 +1,8 @@
+services:
+  # Container que serve o frontend ja compilado em dist/.
+  crud-frontend-axios:
+    build: .
+    container_name: crud-frontend-axios
+    ports:
+      # Frontend acessivel em http://localhost:8080
+      - "8080:80"

@@ -1,0 +1,109 @@
+COMANDOS PARA RODAR O PROJETO NO WSL
+====================================
+
+1. Entrar na pasta do projeto pelo WSL
+-------------------------------------
+
+cd /mnt/c/Users/guilh/Desktop/CRUD
+
+
+2. Subir a API + PHP + MySQL
+---------------------------
+
+cd /mnt/c/Users/guilh/Desktop/CRUD/crud-api
+docker compose up --build
+
+API:
+http://localhost:8000/api/products
+
+
+3. Subir o frontend
+-------------------
+
+Abra outro terminal WSL e rode:
+
+cd /mnt/c/Users/guilh/Desktop/CRUD/crud-frontend-axios
+npm install
+npm run build
+docker compose up --build
+
+Frontend:
+http://localhost:8080
+
+
+4. Ver containers rodando
+-------------------------
+
+docker ps
+
+
+5. Ver produtos direto no MySQL
+-------------------------------
+
+Entrar no terminal do MySQL:
+
+docker exec -it crud-api-db mysql -u crud_user -p
+
+Quando pedir a senha, digite:
+
+crud_pass
+
+Dentro do MySQL, rode:
+
+USE crud_products;
+SELECT * FROM products;
+
+Para sair:
+
+exit;
+
+Tambem da para consultar os produtos em um unico comando:
+
+docker exec -it crud-api-db mysql -u crud_user -pcrud_pass crud_products -e "SELECT * FROM products;"
+
+
+6. Parar os containers
+----------------------
+
+API:
+
+cd /mnt/c/Users/guilh/Desktop/CRUD/crud-api
+docker compose down
+
+Frontend:
+
+cd /mnt/c/Users/guilh/Desktop/CRUD/crud-frontend-axios
+docker compose down
+
+
+7. Reiniciar tudo do zero
+-------------------------
+
+API:
+
+cd /mnt/c/Users/guilh/Desktop/CRUD/crud-api
+docker compose down
+docker compose up --build
+
+Frontend:
+
+cd /mnt/c/Users/guilh/Desktop/CRUD/crud-frontend-axios
+npm run build
+docker compose down
+docker compose up --build
+
+
+OBSERVACOES
+-----------
+
+- No WSL, caminhos do Windows ficam dentro de /mnt/c.
+- Por isso, C:\Users\guilh\Desktop\CRUD vira:
+  /mnt/c/Users/guilh/Desktop/CRUD
+
+- Use barras normais / no WSL.
+- Nao use C:\Users\... dentro do terminal Linux/WSL.
+- A aplicacao principal para abrir no navegador e:
+  http://localhost:8080
+
+- A API e acessada pelo frontend, mas tambem pode ser testada em:
+  http://localhost:8000/api/products
